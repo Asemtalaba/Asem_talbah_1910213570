@@ -1,0 +1,65 @@
+#include <stdio.h>
+
+/*
+Name: Asem Talbah
+Student ID: 1910213570
+Course: Data Structure
+HW: 10
+Topic: Tree Creation using Array
+*/
+
+#define MAX 15
+
+int tree[MAX];
+
+// Initialize tree with -1 (empty)
+void initTree() {
+    for (int i = 0; i < MAX; i++)
+        tree[i] = -1;
+}
+
+// Insert value into tree array (level order)
+void insert(int value, int index) {
+    if (index >= MAX) {
+        printf("Index out of bounds\n");
+        return;
+    }
+    tree[index] = value;
+}
+
+// Inorder Traversal using array
+void inorder(int index) {
+    if (index >= MAX || tree[index] == -1)
+        return;
+
+    inorder(2 * index + 1);   // Left child
+    printf("%d ", tree[index]);
+    inorder(2 * index + 2);   // Right child
+}
+
+int main() {
+    initTree();
+
+    /*
+        Tree structure (array-based):
+                1
+              /   \
+             2     3
+            / \   / \
+           4   5 6   7
+    */
+
+    insert(1, 0);
+    insert(2, 1);
+    insert(3, 2);
+    insert(4, 3);
+    insert(5, 4);
+    insert(6, 5);
+    insert(7, 6);
+
+    printf("Inorder Traversal: ");
+    inorder(0);
+    printf("\n");
+
+    return 0;
+}
