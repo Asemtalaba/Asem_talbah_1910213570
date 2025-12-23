@@ -1,0 +1,161 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/*
+Name: Asem Talbah
+Student ID: 1910213570
+Course: Data Structure
+HW: 6
+Topic: Circular Linked List (Insert in middle, Delete, Traversal)
+*/
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* createNode(int value) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    n->data = value;
+    n->next = NULL;
+    return n;
+}
+
+// Traversal: print once around the circle
+void traverse(Node* head) {
+    if (!head) {
+        printf("List: (empty)\n");
+        return;
+    }
+
+    printf("List: ");
+    Node* cur = head;
+    do {
+        printf("%d ", cur->data);
+        cur = cur->next;
+    } while (cur != head);
+    printf("\n");
+}
+
+// Get length of circular list
+int length(Node* head) {
+    if (!head) return 0;
+    int len = 0;
+    Node* cur = head;
+    do {
+        len++;
+        cur = cur->next;
+    } while (cur != head);
+    return len;
+}
+
+// Insert at position (0-based) => "araya ekleme"
+void insertAtPosition(Node** head, int value, int pos) {
+    if (pos < 0) {
+        printf("Invalid position\n");
+        return;
+    }
+
+    Node* newNode = createNode(value);
+
+    // If list is empty
+    if (*head == NULL) {
+        if (pos != 0) {
+            printf("Out of range\n");
+            free(newNode);
+            return;
+        }
+        newNode->next = newNode;   // circular
+        *head = newNode;
+        return;
+    }
+
+    int len = length(*head);
+    if (pos > len) {
+        printf("Out of range\n");
+        free(newNode);
+        return;
+    }
+
+    // Insert at head
+    if (pos == 0) {
+        Node* tail = *head;
+        while (tail->next != *head)
+            tail = tail->next;
+
+        newNode->next = *head;
+        tail->next = newNode;
+        *head = newNode;
+        return;
+    }
+
+    // Insert in middle/end
+    Node* cur = *head;
+    for (int i = 0; i < pos - 1; i++)
+        cur = cur->next;
+
+    newNode->next = cur->next;
+    cur->next = newNode;
+}
+
+// Delete at position (0-based) => "silme"
+void deleteAtPosition(Node** head, int pos) {
+    if (*head == NULL || pos < 0) {
+        printf("Invalid delete\n");
+        return;
+    }
+
+    int len = length(*head);
+    if (pos >= len) {
+        printf("Out of range\n");
+        return;
+    }
+
+    // Only one node
+    if (len == 1 && pos == 0) {
+        free(*head);
+        *head = NULL;
+        return;
+    }
+
+    // Delete head
+    if (pos == 0) {
+        Node* tail = *head;
+        while (tail->next != *head)
+            tail = tail->next;
+
+        Node* temp = *head;
+        *head = (*head)->next;
+        tail->next = *head;
+        free(temp);
+        return;
+    }
+
+    // Delete middle/end
+    Node* cur = *head;
+    for (int i = 0; i < pos - 1; i++)
+        cur = cur->next;
+
+    Node* temp = cur->next;
+    cur->next = temp->next;
+    free(temp);
+}
+
+int main() {
+    Node* head = NULL;
+
+    // Build circular list
+    insertAtPosition(&head, 10, 0);
+    insertAtPosition(&head, 20, 1);
+    insertAtPosition(&head, 30, 2);
+
+    // Insert in middle (position 1)
+    insertAtPosition(&head, 15, 1);
+    traverse(head);
+
+    // Delete from position 2
+    deleteAtPosition(&head, 2);
+    traverse(head);
+
+    return 0;
+}
