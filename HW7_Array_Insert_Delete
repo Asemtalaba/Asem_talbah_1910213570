@@ -1,0 +1,68 @@
+#include <stdio.h>
+
+/*
+Name: Asem Talbah
+Student ID: 1910213570
+Course: Data Structure
+HW: 7
+Topic: Array Insert and Delete
+*/
+
+// Insert into array at POSITION (0-based)
+int insertItem(int DATA[], int SIZE, int POSITION, int NEW_VAL) {
+    if (POSITION < 0 || POSITION > SIZE) {
+        printf("Invalid position for insertion!\n");
+        return SIZE;
+    }
+
+    int i = SIZE;
+    SIZE++;
+
+    while (i >= POSITION) {
+        DATA[i + 1] = DATA[i];
+        i--;
+    }
+
+    DATA[POSITION] = NEW_VAL;
+    return SIZE;
+}
+
+// Delete from array at POSITION (0-based)
+int deleteItem(int DATA[], int SIZE, int POSITION) {
+    if (POSITION < 0 || POSITION >= SIZE) {
+        printf("Invalid position for deletion!\n");
+        return SIZE;
+    }
+
+    int removed = DATA[POSITION];
+
+    for (int j = POSITION; j < SIZE - 1; j++) {
+        DATA[j] = DATA[j + 1];
+    }
+
+    printf("Element %d deleted from index %d\n", removed, POSITION);
+    return SIZE - 1;
+}
+
+int main() {
+    int DATA[100] = {10, 20, 30, 40, 50};
+    int SIZE = 5;
+
+    printf("Initial Array: ");
+    for (int i = 0; i < SIZE; i++) printf("%d ", DATA[i]);
+    printf("\n");
+
+    // Test Insert
+    SIZE = insertItem(DATA, SIZE, 2, 99);
+    printf("After Insert: ");
+    for (int i = 0; i < SIZE; i++) printf("%d ", DATA[i]);
+    printf("\n");
+
+    // Test Delete
+    SIZE = deleteItem(DATA, SIZE, 2);
+    printf("After Delete: ");
+    for (int i = 0; i < SIZE; i++) printf("%d ", DATA[i]);
+    printf("\n");
+
+    return 0;
+}
