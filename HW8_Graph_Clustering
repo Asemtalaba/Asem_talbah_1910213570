@@ -1,0 +1,52 @@
+#include <stdio.h>
+
+/*
+Name: Asem Talbah
+Student ID: 1910213570
+Course: Data Structure
+HW: 8
+Topic: Graph Clustering (Connected Components) using Adjacency Matrix
+*/
+
+#define N 7  // number of nodes
+
+void dfs(int graph[N][N], int visited[N], int node) {
+    visited[node] = 1;
+    printf("%d ", node);
+
+    for (int i = 0; i < N; i++) {
+        if (graph[node][i] == 1 && !visited[i]) {
+            dfs(graph, visited, i);
+        }
+    }
+}
+
+int main() {
+    // Graph given as adjacency matrix (undirected)
+    int graph[N][N] = {
+        // 0 1 2 3 4 5 6
+        {0,1,1,0,0,0,0}, // 0
+        {1,0,1,0,0,0,0}, // 1
+        {1,1,0,0,0,0,0}, // 2  -> Cluster 1: {0,1,2}
+        {0,0,0,0,1,0,0}, // 3
+        {0,0,0,1,0,0,0}, // 4  -> Cluster 2: {3,4}
+        {0,0,0,0,0,0,1}, // 5
+        {0,0,0,0,0,1,0}  // 6  -> Cluster 3: {5,6}
+    };
+
+    int visited[N] = {0};
+    int clusterCount = 0;
+
+    printf("Clusters (Connected Components):\n");
+
+    for (int i = 0; i < N; i++) {
+        if (!visited[i]) {
+            clusterCount++;
+            printf("Cluster %d: ", clusterCount);
+            dfs(graph, visited, i);
+            printf("\n");
+        }
+    }
+
+    return 0;
+}
