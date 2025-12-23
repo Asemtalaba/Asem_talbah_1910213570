@@ -1,0 +1,71 @@
+#include <stdio.h>
+
+#define N 7
+
+/*
+Name: Asem Talbah
+Student ID: 1910213570
+Course: Data Structure
+HW: 9
+Topic: DFS and BFS using Adjacency Matrix
+*/
+
+// ---------- DFS ----------
+void dfs(int graph[N][N], int visited[N], int node) {
+    visited[node] = 1;
+    printf("%d ", node);
+
+    for (int i = 0; i < N; i++) {
+        if (graph[node][i] == 1 && !visited[i]) {
+            dfs(graph, visited, i);
+        }
+    }
+}
+
+// ---------- BFS ----------
+void bfs(int graph[N][N], int start) {
+    int visited[N] = {0};
+    int queue[N];
+    int front = 0, rear = 0;
+
+    visited[start] = 1;
+    queue[rear++] = start;
+
+    while (front < rear) {
+        int node = queue[front++];
+        printf("%d ", node);
+
+        for (int i = 0; i < N; i++) {
+            if (graph[node][i] == 1 && !visited[i]) {
+                visited[i] = 1;
+                queue[rear++] = i;
+            }
+        }
+    }
+}
+
+int main() {
+    // Graph as adjacency matrix
+    int graph[N][N] = {
+        //0 1 2 3 4 5 6
+        {0,1,1,0,0,0,0}, // 0
+        {1,0,0,1,0,0,0}, // 1
+        {1,0,0,0,1,0,0}, // 2
+        {0,1,0,0,0,1,0}, // 3
+        {0,0,1,0,0,0,1}, // 4
+        {0,0,0,1,0,0,0}, // 5
+        {0,0,0,0,1,0,0}  // 6
+    };
+
+    int visited[N] = {0};
+
+    printf("DFS starting from node 0: ");
+    dfs(graph, visited, 0);
+    printf("\n");
+
+    printf("BFS starting from node 0: ");
+    bfs(graph, 0);
+    printf("\n");
+
+    return 0;
+}
